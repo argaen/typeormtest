@@ -1,8 +1,32 @@
+'use client';
+console.log(process.version);
+
+import React from 'react';
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from './page.module.css'
 
+import "reflect-metadata";
+import { DataSource } from "typeorm";
+
 const inter = Inter({ subsets: ['latin'] })
+
+export async function initDB(database: Uint8Array) {
+  const datasource = new DataSource({
+    type: 'sqljs',
+    synchronize: false,
+    database,
+    logging: true,
+    autoSave: true, // Stores the DB in local storage
+    entities: [],
+    subscribers: [],
+    migrations: [],
+  });
+
+  await datasource.initialize();
+
+  return datasource;
+}
 
 export default function Home() {
   return (
